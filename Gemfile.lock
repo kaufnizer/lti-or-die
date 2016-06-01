@@ -55,6 +55,9 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
+    ims-lti (1.1.11)
+      builder
+      oauth (~> 0.4.5)
     jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -75,6 +78,7 @@ GEM
     multi_json (1.12.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    oauth (0.4.7)
     pg (0.18.4)
     rack (1.6.4)
     rack-test (0.6.3)
@@ -145,6 +149,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
+  ims-lti
   jbuilder (~> 2.0)
   jquery-rails
   pg
