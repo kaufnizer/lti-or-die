@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  match '/launch' => 'launch#show', via: :get
+  match '/launch' => 'launch#receive', via: :post
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
