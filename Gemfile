@@ -32,7 +32,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'ims-lti'
+gem 'ims-lti', '2.0.0.beta.41'
+gem 'oauth', '~> 0.5.1'
+gem 'uuid'
+gem 'simple_oauth'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
