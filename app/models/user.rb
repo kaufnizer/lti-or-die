@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   require 'typhoeus'
 
   def has_api_token?
-    return true if self["canvas_api_token"] else return false
+    self["canvas_api_token"].blank? ? false : true
   end
 
   def token_valid?(domain)
