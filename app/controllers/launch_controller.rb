@@ -20,6 +20,11 @@ class LaunchController < ActionController::Base
   def receive
     response.headers.delete "X-Frame-Options"
 
+    launch_params = request.params
+    @user_id = launch_params["user_id"]
+    @domain = launch_params["custom_canvas_api_domain"]
+    @user = set_user(launch_params)
+
     #lti_message = IMS::LTI::Models::Messages::Message.generate(request.request_parameters.merge(request.query_parameters))
     #lti_message.launch_url = request.url
     secret = '1'
