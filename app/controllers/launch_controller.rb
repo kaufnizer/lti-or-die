@@ -14,7 +14,7 @@ class LaunchController < ActionController::Base
     response.headers.delete "X-Frame-Options"
     launch_params = request.params
     @user_id = launch_params["user_id"]
-    domain = launch_params["custom_canvas_api_domain"]
+    @domain = launch_params["custom_canvas_api_@domain"]
     @user = set_user(launch_params)
 
     #lti_message = IMS::LTI::Models::Messages::Message.generate(request.request_parameters.merge(request.query_parameters))
@@ -25,8 +25,8 @@ class LaunchController < ActionController::Base
 
     if provider_signature == launch_params["oauth_signature"]
     #if lti_message.valid_signature?(secret)
-      byebug
-      unless @user.has_api_token? && @user.token_valid?(domain)
+
+      unless @user.has_api_token? && @user.token_valid?(@domain)
         puts "@User needs token"
         request_access
       else
@@ -49,7 +49,7 @@ class LaunchController < ActionController::Base
 
   def set_user(launch_params)
     if user_exists?
-      byebug
+
       puts "Setting existing user with ID #{@user_id}"
       User.find_by(user_id: @user_id)
     else
@@ -62,7 +62,7 @@ class LaunchController < ActionController::Base
 
 
     def request_access
-      url = "https://#{domain}/login/oauth2/auth?client_id=10000000000002&response_type=code&redirect_uri=http://localhost:3000/oauth2response&state=temp"
+      url = "https://#{@domain}/login/oauth2/auth?client_id=10000000000002&response_type=code&redirect_uri=http://localhost:3001/oauth2response&state=temp"
       redirect_to url
     end
 
@@ -73,10 +73,10 @@ class LaunchController < ActionController::Base
     puts "code = #{code}"
     state = request.params["state"]
     puts "state= #{state}"
-    byebug
+
     if @user.canvas_api_refresh_token != nil && Time.now.to_i > @user.token_expires_at
       puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("https://#{@domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
                                                :client_id=>"10000000000002",
@@ -87,12 +87,12 @@ class LaunchController < ActionController::Base
                                       })
     else
       puts "Obtaining new token"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("https://#{@domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
                                                :client_id=>"10000000000002",
                                                :client_secret => "hR0UihLlmehye6y1xaQyBROapqfonAWzlk69RiKsbR4oqI8CDCHnCQx6Ft7GfNFv",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :redirect_uri => "https://localhost:3001/oauth2response",
                                                :code => code
                                       })
 
