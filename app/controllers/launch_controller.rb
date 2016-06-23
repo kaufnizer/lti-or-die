@@ -14,7 +14,7 @@ class LaunchController < ActionController::Base
     response.headers.delete "X-Frame-Options"
     launch_params = request.params
     @user_id = launch_params["user_id"]
-    @domain = launch_params["custom_canvas_api_@domain"]
+    @domain = launch_params["custom_canvas_api_domain"]
     @user = set_user(launch_params)
 
     #lti_message = IMS::LTI::Models::Messages::Message.generate(request.request_parameters.merge(request.query_parameters))
@@ -81,7 +81,7 @@ class LaunchController < ActionController::Base
                                       params: {:grant_type=>"refresh_token",
                                                :client_id=>"10000000000002",
                                                :client_secret => "hR0UihLlmehye6y1xaQyBROapqfonAWzlk69RiKsbR4oqI8CDCHnCQx6Ft7GfNFv",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :redirect_uri => "https://localhost:3001/oauth2response",
                                                :code => code,
                                                :refresh_token => @user.canvas_api_refresh_token
                                       })
