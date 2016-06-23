@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160622224540) do
+ActiveRecord::Schema.define(version: 20160623065348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20160622224540) do
     t.datetime "updated_at",               null: false
     t.string   "canvas_api_token"
     t.string   "canvas_api_refresh_token"
-    t.string   "token_expires_at"
+    t.integer  "token_expires_at"
   end
 
 end
