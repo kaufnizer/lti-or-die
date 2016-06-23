@@ -28,15 +28,16 @@ class LaunchController < ActionController::Base
 
     if provider_signature == @launch_params["oauth_signature"]
     #if lti_message.valid_signature?(secret)
-      @user = User.find_by(user_id: @user_id) || User.create(
-                                                      full_name: @launch_params["lis_person_name_full"],
-                                                      primary_email: @launch_params["lis_person_contact_email_primary"],
-                                                      canvas_user_id: @launch_params["custom_canvas_user_id"],
-                                                      user_id: @user_id,
-                                                      token_requested_from: @domain)
-
+      @user = User.find_or_create_by(user_id: @user_id) do |user|
+        user.full_name = @launch_params["lis_person_name_full"]
+        user.primary_email = @launch_params["lis_person_contact_email_primary"]
+        user.canvas_user_id = @launch_params["custom_canvas_user_id"]
+        user.user_id = @user_id
+        user.token_requested_from = @domain
+      end
+byebug
       unless @user.has_api_token? && @user.token_valid?(@domain)
-        puts "@User needs token"
+        puts "User needs token"
         request_access
       else
         puts "User already has token"
@@ -48,7 +49,7 @@ class LaunchController < ActionController::Base
   end
 
     def request_access
-      url = "https://#{@domain}/login/oauth2/auth?client_id=36990000000000001&response_type=code&redirect_uri=http://localhost:3000/oauth2response&state=#{@user_id}"
+      url = "http://#{@domain}/login/oauth2/auth?client_id=10000000000002&response_type=code&redirect_uri=http://localhost:3001/oauth2response&state=#{@user_id}"
       redirect_to url
     end
 
@@ -63,22 +64,22 @@ class LaunchController < ActionController::Base
 
     if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
       puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
-                                               :client_id=>"36990000000000001",
-                                               :client_secret => "i6FzleeV5D3IVv9ClYEJtfQ76NNGg7oGy59IUFMQB7JAWBhZSSDyJlnTPKiydO9g",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :client_id=>"10000000000002",
+                                               :client_secret => "hR0UihLlmehye6y1xaQyBROapqfonAWzlk69RiKsbR4oqI8CDCHnCQx6Ft7GfNFv",
+                                               :redirect_uri => "http://localhost:3001/oauth2response",
                                                :refresh_token => user["canvas_api_refresh_token"]
                                       })
     else
       puts "Obtaining new token"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
-                                               :client_id=>"36990000000000001",
-                                               :client_secret => "i6FzleeV5D3IVv9ClYEJtfQ76NNGg7oGy59IUFMQB7JAWBhZSSDyJlnTPKiydO9g",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :client_id=>"10000000000002",
+                                               :client_secret => "hR0UihLlmehye6y1xaQyBROapqfonAWzlk69RiKsbR4oqI8CDCHnCQx6Ft7GfNFv",
+                                               :redirect_uri => "http://localhost:3001/oauth2response",
                                                :code => code
                                       })
 
@@ -95,12 +96,14 @@ class LaunchController < ActionController::Base
     puts "Token updated to: #{response_body["access_token"]}"
     puts user.canvas_api_token
 
-    request = Typhoeus::Request.new("https://#{domain}/api/v1/users/self",
+    request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
                                     headers: {:Authorization=>"Bearer #{user["canvas_api_token"]}"
                                     })
     response = request.run
     response_body = JSON.load response.response_body
 
-    redirect_to response_body["avatar_url"]
+    redirect_to response_body["avatar_url"] unless response_body["avatar_url"] != nil?
+    puts 'done'
+
   end
 end
