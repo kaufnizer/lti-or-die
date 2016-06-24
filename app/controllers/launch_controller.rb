@@ -35,7 +35,7 @@ class LaunchController < ActionController::Base
         user.user_id = @user_id
         user.token_requested_from = @domain
       end
-byebug
+
       unless @user.has_api_token? && @user.token_valid?(@domain)
         puts "User needs token"
         request_access
@@ -49,8 +49,8 @@ byebug
   end
 
     def request_access
-      url = "http://#{@domain}/login/oauth2/auth?client_id=10000000000002&response_type=code&redirect_uri=http://localhost:3001/oauth2response&state=#{@user_id}"
-      redirect_to url
+      redirect_to "http://#{@domain}/login/oauth2/auth?client_id=10000000000002&response_type=code&redirect_uri=http://localhost:3001/oauth2response&state=#{@user_id}"
+
     end
 
   def oauth2response
@@ -103,7 +103,7 @@ byebug
     response_body = JSON.load response.response_body
 
     redirect_to response_body["avatar_url"] unless response_body["avatar_url"] != nil?
-    puts 'done'
+    render text: "im here because im sad at initial load, deal with it! and reload the page"
 
   end
 end

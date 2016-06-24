@@ -6,11 +6,11 @@ class User < ActiveRecord::Base
   end
 
   def token_valid?(domain)
-    request = Typhoeus::Request.new("https://#{domain}/api/v1/users/self",
+    request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
                                     headers: {:Authorization=>"Bearer #{self.canvas_api_token}"
                                     })
     response = request.run
     puts "Token heath check response: #{response.code}"
-    return true if response.code == 200 else return false
+    response.code == 200 ? true : false
   end
 end
