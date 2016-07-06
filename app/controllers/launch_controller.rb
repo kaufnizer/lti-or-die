@@ -29,15 +29,16 @@ class LaunchController < ActionController::Base
 
     if provider_signature == @launch_params["oauth_signature"]
     #if lti_message.valid_signature?(secret)
-      @user = User.find_by(user_id: @user_id) || User.create(
-                                                      full_name: @launch_params["lis_person_name_full"],
-                                                      primary_email: @launch_params["lis_person_contact_email_primary"],
-                                                      canvas_user_id: @launch_params["custom_canvas_user_id"],
-                                                      user_id: @user_id,
-                                                      token_requested_from: @domain)
+      @user = User.find_or_create_by(user_id: @user_id) do |user|
+        user.full_name = @launch_params["lis_person_name_full"]
+        user.primary_email = @launch_params["lis_person_contact_email_primary"]
+        user.canvas_user_id = @launch_params["custom_canvas_user_id"]
+        user.user_id = @user_id
+        user.token_requested_from = @domain
+      end
 
       unless @user.has_api_token? && @user.token_valid?(@domain)
-        puts "@User needs token"
+        puts "User needs token"
         request_access
       else
         puts "User already has token"
@@ -67,7 +68,7 @@ class LaunchController < ActionController::Base
 
     if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
       puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
                                                :client_id=>"37000000000000001",
@@ -77,7 +78,7 @@ class LaunchController < ActionController::Base
                                       })
     else
       puts "Obtaining new token"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
                                                :client_id=>"37000000000000001",
@@ -99,7 +100,7 @@ class LaunchController < ActionController::Base
     puts "Token updated to: #{response_body["access_token"]}"
     puts user.canvas_api_token
 
-    request = Typhoeus::Request.new("https://#{domain}/api/v1/users/self",
+    request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
                                     headers: {:Authorization=>"Bearer #{user["canvas_api_token"]}"
                                     })
     response = request.run
