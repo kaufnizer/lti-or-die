@@ -4,5 +4,7 @@
 <p>Redirect URI: <%= @devkey.uri %></p>
 <p>Base URL: <%= @devkey.base_url %></p>
 
+<%= link_to "edit", edit_devkey_path(@devkey) %>
+
 <%= link_to "delete", @devkey, method: :delete,
             data: { confirm: "You sure you want to set up us the bomb?" } %>
