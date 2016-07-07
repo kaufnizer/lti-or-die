@@ -3,3 +3,6 @@
 <p>API Key: <%= @devkey.key %></p>
 <p>Redirect URI: <%= @devkey.uri %></p>
 <p>Base URL: <%= @devkey.base_url %></p>
+
+<%= link_to "delete", @devkey, method: :delete,
+            data: { confirm: "You sure you want to set up us the bomb?" } %>

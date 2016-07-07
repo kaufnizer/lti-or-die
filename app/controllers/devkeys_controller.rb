@@ -27,6 +27,12 @@ class DevkeysController < ApplicationController
     end
   end
 
+  def destroy
+    Devkey.find(params[:id]).destroy
+    flash[:success] = "Developer Key deleted"
+    redirect_to action: 'new'
+  end
+
   def edit
     @devkey = Devkey.find(params[:id])
   end
