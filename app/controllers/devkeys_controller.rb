@@ -1,4 +1,8 @@
 class DevkeysController < ApplicationController
+  def show
+    @devkey = Devkey.find(params[:id])
+  end
+
   def new
     @devkey = Devkey.new
   end
