@@ -27,7 +27,10 @@ class LaunchController < ActionController::Base
 
     provider_signature = OAuth::Signature.sign(request, :consumer_secret => secret, :consumer_key => '1')
 
-    if provider_signature == @launch_params["oauth_signature"]
+    @devkey = Devkey.find_by(domain: @domain)
+
+
+    if provider_signature == @launch_params["oauth_signature"] && @devkey
     #if lti_message.valid_signature?(secret)
       @user = User.find_or_create_by(user_id: @user_id) do |user|
         user.full_name = @launch_params["lis_person_name_full"]
@@ -44,13 +47,15 @@ class LaunchController < ActionController::Base
         puts "User already has token"
         render :show
       end
-    else
+    elsif @devkey
       render :invalid_signature
+    else
+      redirect_to url_for(:controller => :devkeys, :action => :new)
     end
   end
 
     def request_access
-      url = "https://#{@domain}/login/oauth2/auth?client_id=37000000000000001&response_type=code&redirect_uri=http://localhost:3000/oauth2response&state=#{@user_id}"
+      url = "https://#{@domain}/login/oauth2/auth?client_id=#{@devkey.client_id}&response_type=code&redirect_uri=#{@devkey.uri}&state=#{@user_id}"
       redirect_to url
     end
 #https://jpoulos.instructure.com/login/oauth2/auth?client_id=37000000000000002&response_type=code&redirect_uri=http://google.com&scope=/auth/userinfo
@@ -65,15 +70,16 @@ class LaunchController < ActionController::Base
     user = User.find_by(user_id: state)
     puts user
     domain = user["token_requested_from"]
+    @devkey = Devkey.find_by(domain: domain)
 
     if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
       puts "Token expired, refreshing"
       request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
-                                               :client_id=>"37000000000000001",
-                                               :client_secret => "SAwDtcgVk9PsONsmVNEnBgRB339KheyfDdqLi9G1oIY1fbgcTFAoYD4NNstYPvHl",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :client_id=> @devkey.client_id,
+                                               :client_secret => @devkey.key,
+                                               :redirect_uri => @devkey.uri,
                                                :refresh_token => user["canvas_api_refresh_token"]
                                       })
     else
@@ -81,9 +87,9 @@ class LaunchController < ActionController::Base
       request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
-                                               :client_id=>"37000000000000001",
-                                               :client_secret => "SAwDtcgVk9PsONsmVNEnBgRB339KheyfDdqLi9G1oIY1fbgcTFAoYD4NNstYPvHl",
-                                               :redirect_uri => "https://localhost:3000/oauth2response",
+                                               :client_id=> @devkey.client_id,
+                                               :client_secret => @devkey.key,
+                                               :redirect_uri => @devkey.uri,
                                                :code => code
                                       })
 
