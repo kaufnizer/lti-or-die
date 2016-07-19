@@ -68,7 +68,7 @@ class LaunchController < ActionController::Base
 
     if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
       puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
                                                :client_id=>"37000000000000001",
@@ -78,7 +78,7 @@ class LaunchController < ActionController::Base
                                       })
     else
       puts "Obtaining new token"
-      request = Typhoeus::Request.new("http://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
                                                :client_id=>"37000000000000001",
@@ -100,11 +100,11 @@ class LaunchController < ActionController::Base
     puts "Token updated to: #{response_body["access_token"]}"
     puts user.canvas_api_token
 
-    request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
-                                    headers: {:Authorization=>"Bearer #{user["canvas_api_token"]}"
-                                    })
-    response = request.run
-    response_body = JSON.load response.response_body
+    #request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
+    #                                headers: {:Authorization=>"Bearer #{user["canvas_api_token"]}"
+    #                                })
+    #response = request.run
+    #response_body = JSON.load response.response_body
 
     #redirect_to response_body["avatar_url"]
     render :show
