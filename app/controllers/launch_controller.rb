@@ -23,14 +23,14 @@ class LaunchController < ActionController::Base
     #lti_message = IMS::LTI::Models::Messages::Message.generate(request.request_parameters.merge(request.query_parameters))
     #lti_message.launch_url = request.url
     secret = '1'
-    puts request.parameters
+    #puts request.parameters
 
-    provider_signature = OAuth::Signature.sign(request, :consumer_secret => secret, :consumer_key => '1')
+
 
     @devkey = Devkey.find_by(domain: @domain)
 
 
-    if provider_signature == @launch_params["oauth_signature"] && @devkey
+    if signature_valid?(request, secret) && @devkey
     #if lti_message.valid_signature?(secret)
       @user = User.find_or_create_by(user_id: @user_id) do |user|
         user.full_name = @launch_params["lis_person_name_full"]
@@ -52,6 +52,14 @@ class LaunchController < ActionController::Base
     else
       redirect_to url_for(:controller => :devkeys, :action => :new)
     end
+  end
+
+  def signature_valid?(request, secret)
+    provider_signature = OAuth::Signature.sign(request, :consumer_secret => secret)
+    puts "Provider signature:#{provider_signature}"
+    puts "Canvas signature: #{request.params["oauth_signature"]}"
+
+    provider_signature == request.params["oauth_signature"] ? true : false
   end
 
     def request_access
@@ -118,7 +126,13 @@ class LaunchController < ActionController::Base
 
   def content_item
     response.headers.delete "X-Frame-Options"
+    secret = '1'
 
-    render text: "#{request.params}"
+    if signature_valid?(request, secret)
+      render :content_item
+    else
+      render :invalid_signature
+    end
+
   end
 end
