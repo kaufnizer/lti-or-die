@@ -1,0 +1,12 @@
+<h2>Domain: <%= @devkey.domain %> </h2>
+<p>Client ID: <%= @devkey.client_id %></p>
+<p>API Key: <%= @devkey.key %></p>
+<p>Redirect URI: <%= @devkey.uri %></p>
+<p>Base URL: <%= @devkey.base_url %></p>
+
+<%= link_to "edit", edit_devkey_path(@devkey) %>
+
+<%= link_to "delete", @devkey, method: :delete,
+            data: { confirm: "You sure you want to set up us the bomb?" } %>
+
+<%= link_to 'index', action: :index %>

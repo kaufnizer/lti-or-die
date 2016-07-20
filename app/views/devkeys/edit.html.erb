@@ -1,0 +1,25 @@
+<% provide(:title, "Edit Developer Key") %>
+<h1>Edit Developer Key</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@devkey) do |f| %>
+
+        <%= f.label :domain %>
+        <%= f.text_field :domain, class: 'form-control'  %>
+
+        <%= f.label :client_id %>
+        <%= f.text_field :client_id, class: 'form-control'  %>
+
+        <%= f.label :key %>
+        <%= f.text_field :key, class: 'form-control'  %>
+
+        <%= f.label :uri, "Redirect URI", class: 'form-control' %>
+        <%= f.text_field :uri %>
+
+        <%= f.submit "Save changes", class: "btn btn-primary" %>
+    <% end %>
+
+  </div>
+  <%= link_to "Cancel", @devkey, action: :show %>
+</div>

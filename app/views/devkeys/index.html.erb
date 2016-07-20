@@ -1,0 +1,10 @@
+<% provide(:title, 'Developer Keys') %>
+<h1>Developer Keys</h1>
+
+<ul class="devkeys">
+  <% @devkeys.each do |devkey| %>
+      <li>
+        <%= link_to devkey.domain, devkey %>
+      </li>
+  <% end %>
+</ul>
