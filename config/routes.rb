@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   match '/oauth2response' => 'launch#oauth2response', via: :get
   match '/devkeys/new' => 'devkeys#new', via: :get
 
+  match '/launch/content-item' => 'launch#content_item', via: :post
+
   resources :launch
   resources :devkeys
 

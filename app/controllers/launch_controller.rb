@@ -115,4 +115,10 @@ class LaunchController < ActionController::Base
     #redirect_to response_body["avatar_url"]
     render :show
   end
+
+  def content_item
+    response.headers.delete "X-Frame-Options"
+
+    render text: "#{request.params}"
+  end
 end
