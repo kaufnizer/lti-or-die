@@ -1,0 +1,27 @@
+<% provide(:title, 'Submit') %>
+<h1>Confirm your choice:</h1>
+<p> You Chose: <%= @form_choice %></p>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_tag(@content_item_return_url, method: :post) do %>
+    <%= hidden_field_tag(:content_item_return_url, @content_item_return_url) %>
+    <%= hidden_field_tag(:lti_message_type, "ContentItemSelection") %>
+    <%= hidden_field_tag(:lti_version, "LTI-1p0") %>
+    <%= hidden_field_tag(:content_items, "{  \"@context\": \"http://purl.imsglobal.org/ctx/lti/v1/ContentItem\",
+                \"@graph\": [{
+                         \"@type\": \"LtiLinkItem\",
+                         \"@id\": \"http://example.com/messages/launch\",
+                         \"url\": \"http://example.com/messages/launch\",
+                         \"title\": \"#{@form_choice}\",
+                         \"text\": \"#{@form_choice}\",
+                         \"mediaType\": \"application/vnd.ims.lti.v1.ltilink\",
+                         \"placementAdvice\": {
+                                \"presentationDocumentTarget\": \"frame\"
+                                }
+                             }]
+                }") %>
+        <%= submit_tag("Insert. Heheh, you said insert.") %>
+<% end %>
+
+  </div>

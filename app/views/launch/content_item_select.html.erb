@@ -1,0 +1,30 @@
+
+<% provide(:title, 'Picker') %>
+<h1>Pick something</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_tag("content_item_submit", method: :post) do %>
+        <%= radio_button_tag(:character, "beavis") %>
+        <%= label_tag(:character_beavis, "Beavis") %>
+        <%= radio_button_tag(:character, "butthead") %>
+        <%= label_tag(:character_butthead, "Butthead") %>
+        <%= hidden_field_tag(:content_item_return_url, @content_item_return_url) %>
+        <%= hidden_field_tag(:lti_message_type, "ContentItemSelection") %>
+        <%= hidden_field_tag(:lti_version, "LTI-1p0") %>
+        <%= hidden_field_tag(:content_items, "{  \"@context\": \"http://purl.imsglobal.org/ctx/lti/v1/ContentItem\",
+                \"@graph\": [{
+                         \"@type\": \"LtiLinkItem\",
+                         \"@id\": \"http://example.com/messages/launch\",
+                         \"url\": \"http://example.com/messages/launch\",
+                         \"title\": \"#{params[:character]}\",
+                         \"text\": \"#{params[:character]}\",
+                         \"mediaType\": \"application/vnd.ims.lti.v1.ltilink\",
+                         \"placementAdvice\": {
+                                \"presentationDocumentTarget\": \"frame\"
+                                }
+                             }]
+                }") %>
+        <%= submit_tag("Preview selection") %>
+    <% end %>
+  </div>
