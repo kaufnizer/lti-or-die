@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   match '/devkeys/new' => 'devkeys#new', via: :get
 
   match '/launch/content-item' => 'launch#content_item', via: :post
-  match '/launch/content_item_submit' => 'launch#content_item_submit', via: :post
 
   resources :launch
   resources :devkeys
