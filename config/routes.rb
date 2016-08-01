@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'submission/new'
-  get 'submission/submit'
   get 'users/new'
 
   match '/launch' => 'launch#receive', via: :post
