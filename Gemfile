@@ -32,7 +32,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'ims-lti',              '2.0.0.beta.41'
 gem 'oauth',                '~> 0.5.1'
 gem 'typhoeus',             '>=0.7.1'
 

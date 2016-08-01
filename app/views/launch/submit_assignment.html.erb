@@ -1,0 +1,42 @@
+
+<% provide(:title, 'POX Message Generator') %>
+<h1>Create a POX message for grade passback</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_tag('submit', method: :post, :html => {:'Content-Type' => 'application/xml'}) do %>
+        <%= hidden_field_tag(:lis_outcome_service_url, @lis_outcome_service_url) %>
+        <p><%= text_area_tag(:pox_message,
+                             "<?xml version = \"1.0\" encoding = \"UTF-8\"?>
+                                  <imsx_POXEnvelopeRequest xmlns=\"http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0\">
+                                    <imsx_POXHeader>
+                                      <imsx_POXRequestHeaderInfo>
+                                        <imsx_version>V1.0</imsx_version>
+                                        <imsx_messageIdentifier>999999123</imsx_messageIdentifier>
+                                      </imsx_POXRequestHeaderInfo>
+                                    </imsx_POXHeader>
+                                    <imsx_POXBody>
+                                      <replaceResultRequest>
+                                        <resultRecord>
+                                          <sourcedGUID>
+                                            <sourcedId>#{@lis_result_sourcedid}</sourcedId>
+                                          </sourcedGUID>
+                                          <result>
+                                            <!-- Added element -->
+                                            <resultTotalScore>
+                                              <language>en</language>
+                                              <textString>50</textString>
+                                            </resultTotalScore>
+                                            <!-- Added element -->
+                                            <resultData>
+                                              <ltiLaunchUrl>https://google.com</ltiLaunchUrl>
+                                            </resultData>
+                                          </result>
+                                        </resultRecord>
+                                      </replaceResultRequest>
+                                    </imsx_POXBody>
+                              </imsx_POXEnvelopeRequest>",
+                             size: "70x25") %></p>
+        <p><%= submit_tag("Send message") %></p>
+    <% end %>
+  </div>
