@@ -1,16 +1,22 @@
 Rails.application.routes.draw do
+  get 'content_item/launch'
+  get 'content_item/submit'
+  get 'content_item/assignment'
+  get 'content_item/module'
+  get 'content_item/rce'
   get 'users/new'
 
   match '/launch' => 'launch#receive', via: :post
   match '/oauth2response' => 'launch#oauth2response', via: :get
   match '/devkeys/new' => 'devkeys#new', via: :get
 
-  match '/launch/content-item' => 'launch#content_item', via: :post
+  match 'content-item/launch' => 'content_item#launch', via: :post
   match '/launch/submission' => 'launch#submission', via: :post
   match '/launch/submit' => 'launch#submit', via: :post
 
   resources :launch
   resources :devkeys
+  resources :content_item
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

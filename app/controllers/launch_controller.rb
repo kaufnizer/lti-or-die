@@ -124,15 +124,6 @@ class LaunchController < ActionController::Base
     render :show
   end
 
-  def content_item
-    response.headers.delete "X-Frame-Options"
-    secret = '1'
-    @content_item_return_url = request.params["content_item_return_url"]
-    puts "Content item return url: #{@content_item_return_url}"
-
-    signature_valid?(request, secret) ? (render :content_item_select) : (render :invalid_signature)
-  end
-
   def submission
     response.headers.delete "X-Frame-Options"
     secret = '1'
