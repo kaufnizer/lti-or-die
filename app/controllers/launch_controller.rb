@@ -2,7 +2,6 @@ class LaunchController < ActionController::Base
 
   require 'oauth/request_proxy/action_controller_request'
   require 'typhoeus'
-  require 'nokogiri'
 
   before_action :set_launch_params, only: [:show, :receive, :request_access]
 
