@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  get 'content_item/launch'
-  get 'content_item/submit'
-  get 'content_item/assignment'
-  get 'content_item/module'
-  get 'content_item/rce'
   get 'users/new'
 
   match '/launch' => 'launch#receive', via: :post
