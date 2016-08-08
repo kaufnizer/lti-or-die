@@ -5,7 +5,7 @@ class SubmissionController < LaunchController
     @lis_result_sourcedid = request.params["lis_result_sourcedid"]
     @lis_outcome_service_url = request.params["lis_outcome_service_url"]
 
-    if signature_valid?(request, secret)
+    if SignatureValidation::signature_valid?(request, secret)
       if request.params["roles"].include? "Learner"
         render :new
       else

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0" xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
 <blti:title>Example Tool Provider</blti:title>
 <blti:description>Stupid tool to learn from</blti:description>
-<blti:launch_url>http://localhost:3000/launch</blti:launch_url>
+<blti:launch_url>https://stark-hollows-72196.herokuapp.com/launch</blti:launch_url>
 <blti:extensions platform="canvas.instructure.com">
-  <lticm:property name="domain">localhost</lticm:property>
+  <lticm:property name="domain">herokuapp.com</lticm:property>
   <lticm:property name="icon_url">http://s-media-cache-ak0.pinimg.com/564x/dd/b6/df/ddb6df1fb60bb0c217fce2ffea2f8f21.jpg</lticm:property>
   <lticm:property name="privacy_level">public</lticm:property>
   <lticm:property name="selection_height">500</lticm:property>
@@ -19,13 +19,13 @@
     <lticm:property name="icon_url">https://s-media-cache-ak0.pinimg.com/564x/dd/b6/df/ddb6df1fb60bb0c217fce2ffea2f8f21.jpg</lticm:property>
     <lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
     <lticm:property name="text">Content-Item Test</lticm:property>
-    <lticm:property name="url">http://localhost:3000/content-item/launch</lticm:property>
+    <lticm:property name="url">https://stark-hollows-72196.herokuapp.com/content-item/launch</lticm:property>
   </lticm:options>
   <lticm:options name="assignment_selection">
     <lticm:property name="canvas_icon_class">icon-lti</lticm:property>
     <lticm:property name="icon_url">https://s-media-cache-ak0.pinimg.com/564x/dd/b6/df/ddb6df1fb60bb0c217fce2ffea2f8f21.jpg</lticm:property>
     <lticm:property name="text">Grade Passback Test</lticm:property>
-    <lticm:property name="url">http://localhost:3000/submission/new</lticm:property>
+    <lticm:property name="url">https://stark-hollows-72196.herokuapp.com/submission/new</lticm:property>
   </lticm:options>
  </blti:extensions>
  </cartridge_basiclti_link>

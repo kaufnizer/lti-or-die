@@ -1,7 +1,6 @@
 class LaunchController < ActionController::Base
-
-  require 'oauth/request_proxy/action_controller_request'
   require 'typhoeus'
+  require_relative '../../lib/oauth2.rb'
 
   before_action :set_launch_params, only: [:show, :receive, :request_access]
 
@@ -28,9 +27,9 @@ class LaunchController < ActionController::Base
 
 
     @devkey = Devkey.find_by(domain: @domain)
+    signature = ::OAuth2::Signature.new(request,secret)
 
-
-    if signature_valid?(request, secret) && @devkey
+    if signature.signature_valid? && @devkey
     #if lti_message.valid_signature?(secret)
       @user = User.find_or_create_by(user_id: @user_id) do |user|
         user.full_name = @launch_params["lis_person_name_full"]
@@ -52,14 +51,6 @@ class LaunchController < ActionController::Base
     else
       redirect_to url_for(:controller => :devkeys, :action => :new)
     end
-  end
-
-  def signature_valid?(request, secret)
-    provider_signature = OAuth::Signature.sign(request, :consumer_secret => secret, :method => 'HMAC-SHA1')
-    puts "Provider signature:#{provider_signature}"
-    puts "Canvas signature: #{request.params["oauth_signature"]}"
-
-    provider_signature == request.params["oauth_signature"] ? true : false
   end
 
     def request_access
