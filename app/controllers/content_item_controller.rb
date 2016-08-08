@@ -5,7 +5,9 @@ class ContentItemController < LaunchController
     @content_item_return_url = request.params["content_item_return_url"]
     puts "Content item return url: #{@content_item_return_url}"
 
-    signature_valid?(request, secret) ? (render :launch) : (render :invalid_signature)
+    signature = ::OAuth2::Signature.new(request,secret)
+
+    signature.signature_valid? ? (render :launch) : (render :invalid_signature)
   end
 
   def submit
