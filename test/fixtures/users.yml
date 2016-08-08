@@ -1,13 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  full_name: MyString
-  primary_email: MyString
-  canvas_user_id: MyString
-  user_id: MyString
+no_token:
+  full_name: Has No Token
+  primary_email: hasnotoken@example.com
+  canvas_user_id: 1
+  user_id: 1
 
-two:
-  full_name: MyString
-  primary_email: MyString
-  canvas_user_id: MyString
-  user_id: MyString
+has_valid_token:
+  full_name: Has A Token
+  primary_email: hasatoken@example.com
+  canvas_user_id: 2
+  user_id: 2
+  canvas_api_token: 3700~OoXjykVEk2xZRTXmGWO7fTktwYqaaHYwrx9ELLvvBatBAWjTVMRapa4SUiBtCEeA

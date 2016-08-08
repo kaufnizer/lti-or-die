@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  domain: MyString
-  id: MyString
-  key: MyString
-  uri: MyString
+  domain: jpoulos.instructure.com
+  client_id: bad_id
+  key: bad_key
+  uri: http://localhost:3000/launch
 
 two:
-  domain: MyString
-  id: MyString
-  key: MyString
-  uri: MyString
+  domain: jpoulos.instructure.com
+  client_id: 37000000000000001
+  key: SAwDtcgVk9PsONsmVNEnBgRB339KheyfDdqLi9G1oIY1fbgcTFAoYD4NNstYPvHl
+  uri: https://localhost:3000/oauth2response
