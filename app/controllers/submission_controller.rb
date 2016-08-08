@@ -5,7 +5,9 @@ class SubmissionController < LaunchController
     @lis_result_sourcedid = request.params["lis_result_sourcedid"]
     @lis_outcome_service_url = request.params["lis_outcome_service_url"]
 
-    if SignatureValidation::signature_valid?(request, secret)
+    signature = ::OAuth2::Signature.new(request,secret)
+
+    if signature.signature_valid?
       if request.params["roles"].include? "Learner"
         render :new
       else
