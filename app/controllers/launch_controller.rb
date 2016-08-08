@@ -26,7 +26,7 @@ class LaunchController < ActionController::Base
         user.token_requested_from = @domain
       end
 
-      unless @user.has_api_token? && @user.token_valid?(@domain)
+      unless @user.has_api_token? && @user.token_valid?(@devkey.base_url)
         puts "User needs token"
         request_access
       else
@@ -41,12 +41,12 @@ class LaunchController < ActionController::Base
   end
 
     def request_access
-      url = "https://#{@domain}/login/oauth2/auth?client_id=#{@devkey.client_id}&response_type=code&redirect_uri=#{@devkey.uri}&state=#{@user_id}"
+      url = "#{@devkey.base_url}/login/oauth2/auth?client_id=#{@devkey.client_id}&response_type=code&redirect_uri=#{@devkey.uri}&state=#{@user_id}"
       redirect_to url
     end
 
   def oauth2response
-
+    response.headers.delete "X-Frame-Options"
     code = request.params["code"]
     puts "code = #{code}"
     state = request.params["state"]
@@ -58,7 +58,7 @@ class LaunchController < ActionController::Base
 
     if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
       puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("#{@devkey.base_url}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"refresh_token",
                                                :client_id=> @devkey.client_id,
@@ -68,7 +68,7 @@ class LaunchController < ActionController::Base
                                       })
     else
       puts "Obtaining new token"
-      request = Typhoeus::Request.new("https://#{domain}/login/oauth2/token",
+      request = Typhoeus::Request.new("#{@devkey.base_url}/login/oauth2/token",
                                       method: :post,
                                       params: {:grant_type=>"authorization_code",
                                                :client_id=> @devkey.client_id,

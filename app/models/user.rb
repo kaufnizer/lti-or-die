@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
     self["canvas_api_token"].blank? ? false : true
   end
 
-  def token_valid?(domain)
-    request = Typhoeus::Request.new("http://#{domain}/api/v1/users/self",
+  def token_valid?(base_url)
+    request = Typhoeus::Request.new("#{base_url}/api/v1/users/self",
                                     headers: {:Authorization=>"Bearer #{self.canvas_api_token}"
                                     })
     response = request.run
