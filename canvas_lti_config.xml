@@ -9,11 +9,15 @@
   <lticm:property name="selection_height">500</lticm:property>
   <lticm:property name="selection_width">500</lticm:property>
   <lticm:property name="text">Learn all the things</lticm:property>
+  <lticm:options name="post_only">true</lticm:options>
   <lticm:options name="course_navigation">
     <lticm:property name="enabled">true</lticm:property>
     <!-- <lticm:property name="visibility">admins</lticm:property>-->
      <lticm:property name="default">enabled</lticm:property>
-   </lticm:options>
+  </lticm:options>
+  <lticm:options name="course_home_sub_navigation">
+    <lticm:property name="url">http://localhost:3000/launch?custom_params=your_mom</lticm:property>
+  </lticm:options>
   <lticm:options name="editor_button">
     <lticm:property name="canvas_icon_class">icon-lti</lticm:property>
     <lticm:property name="icon_url">https://s-media-cache-ak0.pinimg.com/564x/dd/b6/df/ddb6df1fb60bb0c217fce2ffea2f8f21.jpg</lticm:property>
@@ -26,6 +30,12 @@
     <lticm:property name="icon_url">https://s-media-cache-ak0.pinimg.com/564x/dd/b6/df/ddb6df1fb60bb0c217fce2ffea2f8f21.jpg</lticm:property>
     <lticm:property name="text">Grade Passback Test</lticm:property>
     <lticm:property name="url">http://localhost:3000/submission/new</lticm:property>
+  </lticm:options>
+  <lticm:options name="global_navigation">
+    <lticm:property name="canvas_icon_class">icon-lti</lticm:property>
+    <lticm:property name="icon_url">https://lti-tool-provider-example.herokuapp.com/selector.png?global_navigation</lticm:property>
+    <lticm:property name="text">global_navigation Text</lticm:property>
+    <lticm:property name="url">http://localhost:3000/launch</lticm:property>
   </lticm:options>
  </blti:extensions>
  </cartridge_basiclti_link>

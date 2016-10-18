@@ -13,6 +13,7 @@ class LaunchController < ActionController::Base
   def receive
     response.headers.delete "X-Frame-Options"
     secret = '1'
+    puts request
 
     @devkey = Devkey.find_by(domain: @domain)
     signature = ::OAuth2::Signature.new(request,secret)
