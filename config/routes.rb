@@ -10,10 +10,18 @@ Rails.application.routes.draw do
   match 'submission/new' => 'submission#new', via: :post
   match 'submission/submit' => 'submission#submit', via: :post
 
+  match 'plagiarism/configure' => 'plagiarism#configure', via: :post
+
+  match '/temperature' => 'temperature#new', via: :post
+  match '/temperature' => 'temperature#show', via: :get
+
+
   resources :launch
   resources :devkeys
   resources :content_item
   resources :submission
+  resources :plagiarism
+  resources :temperature
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
