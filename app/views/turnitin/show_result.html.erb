@@ -1,0 +1,27 @@
+<% provide(:title, 'Response from Canvas') %>
+<h1>Here's the submission data</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p><pre><%=h JSON.pretty_generate(@response_body) %></pre></p>
+
+  </div>
+</div>
+
+<h1>verify that the URL below is correct</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_tag('submit', method: :post) do %>
+        <%= hidden_field_tag(:user_id, @user_id) %>
+        <%= hidden_field_tag(:student_id, @student_id) %>
+        <%= hidden_field_tag(:assignment_id, @assignment_id) %>
+        <%= hidden_field_tag(:domain, @domain) %>
+
+        <p><%= text_area_tag(:reprocess_url,
+                             "https://#{@domain}/api/v1/support_helpers/turnitin/refresh_lti_attachment?attachment_id=#{@attachment_id}&submission_id=#{@submission_id}",
+                             size: "170x25") %></p>
+        <p><%= submit_tag("Process submissions") %></p>
+    <% end %>
+  </div>
+</div>

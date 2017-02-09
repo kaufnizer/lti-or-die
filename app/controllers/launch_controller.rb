@@ -17,6 +17,7 @@ class LaunchController < ActionController::Base
 
     @devkey = Devkey.find_by(domain: @domain)
     signature = ::OAuth2::Signature.new(request,secret)
+    puts "Devkey: #{@devkey}"
 
     if signature.signature_valid? && @devkey
       @user = User.find_or_create_by(user_id: @user_id) do |user|

@@ -1,6 +1,7 @@
 class DevkeysController < ApplicationController
   def index
     @devkeys = Devkey.all
+    render 'index'
   end
 
   def show
@@ -8,6 +9,7 @@ class DevkeysController < ApplicationController
   end
 
   def new
+    response.headers.delete "X-Frame-Options"
     @devkey = Devkey.new
   end
 
@@ -34,7 +36,7 @@ class DevkeysController < ApplicationController
   def destroy
     Devkey.find(params[:id]).destroy
     flash[:success] = "Developer Key deleted"
-    redirect_to action: 'new'
+    redirect_to action: 'index'
   end
 
   def edit

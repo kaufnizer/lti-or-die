@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   match '/launch' => 'launch#receive', via: :post
   match '/oauth2response' => 'launch#oauth2response', via: :get
   match '/devkeys/new' => 'devkeys#new', via: :get
+  match '/devkeys/index' => 'devkeys#index', via: :get
 
   match 'content-item/launch' => 'content_item#launch', via: :post
 
@@ -12,16 +13,17 @@ Rails.application.routes.draw do
 
   match 'plagiarism/configure' => 'plagiarism#configure', via: :post
 
-  match '/temperature' => 'temperature#new', via: :post
-  match '/temperature' => 'temperature#show', via: :get
+  match 'turnitin/tools' => 'turnitin#tools', via: :post
+  match 'turnitin/process_urls' => 'turnitin#process_urls', via: :post
+  match 'turnitin/submit' => 'turnitin#submit', via: :post
 
 
   resources :launch
+  resources :turnitin
   resources :devkeys
   resources :content_item
   resources :submission
   resources :plagiarism
-  resources :temperature
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
