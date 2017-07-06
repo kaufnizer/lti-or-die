@@ -1,5 +1,6 @@
 class SubmissionController < LaunchController
   def new
+    puts "Made it here"
     response.headers.delete "X-Frame-Options"
     secret = '1'
     @lis_result_sourcedid = request.params["lis_result_sourcedid"]

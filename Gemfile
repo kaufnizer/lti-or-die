@@ -35,6 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'oauth',                '~> 0.5.1'
 gem 'typhoeus',             '>=0.7.1'
 gem 'json-jwt',              '>=1.5.1'
+gem 'rails_12factor'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -46,7 +47,6 @@ group :development, :test do
 end
 
 group :production do
-  gem 'rails_12factor'
 end
 
 group :development do
