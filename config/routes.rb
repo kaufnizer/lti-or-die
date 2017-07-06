@@ -10,20 +10,13 @@ Rails.application.routes.draw do
 
   match 'submission/new' => 'submission#new', via: :post
   match 'submission/submit' => 'submission#submit', via: :post
-
-  match 'plagiarism/configure' => 'plagiarism#configure', via: :post
-
-  match 'turnitin/tools' => 'turnitin#tools', via: :post
-  match 'turnitin/process_urls' => 'turnitin#process_urls', via: :post
-  match 'turnitin/submit' => 'turnitin#submit', via: :post
+  match 'submission/show' => 'submission#show', via: :post
 
 
   resources :launch
-  resources :turnitin
   resources :devkeys
   resources :content_item
   resources :submission
-  resources :plagiarism
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

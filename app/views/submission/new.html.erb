@@ -5,6 +5,7 @@
   <div class="col-md-6 col-md-offset-3">
     <%= form_tag('submit', method: :post, :html => {:'Content-Type' => 'application/xml'}) do %>
         <%= hidden_field_tag(:lis_outcome_service_url, @lis_outcome_service_url) %>
+        <%= hidden_field_tag(:user, @user) %>
         <p><%= text_area_tag(:pox_message,
                              "<?xml version = \"1.0\" encoding = \"UTF-8\"?>
                                   <imsx_POXEnvelopeRequest xmlns=\"http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0\">
@@ -28,7 +29,7 @@
                                             </resultTotalScore>
                                             <!-- Added element -->
                                             <resultData>
-                                              <ltiLaunchUrl>https://google.com</ltiLaunchUrl>
+                                              <ltiLaunchUrl>http://localhost:3000/submission/show?submission_id=#{Submission.last.id+1}</ltiLaunchUrl>
                                             </resultData>
                                           </result>
                                         </resultRecord>

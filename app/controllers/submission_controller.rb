@@ -4,6 +4,7 @@ class SubmissionController < LaunchController
     secret = '1'
     @lis_result_sourcedid = request.params["lis_result_sourcedid"]
     @lis_outcome_service_url = request.params["lis_outcome_service_url"]
+    @user = request.params["user_id"]
 
     signature = ::OAuth2::Signature.new(request,secret)
 
@@ -23,18 +24,38 @@ class SubmissionController < LaunchController
     secret = '1'
     @lis_outcome_service_url = request.params["lis_outcome_service_url"]
     @pox_message = request.params["pox_message"]
-    puts "@pox_message: #{@pox_message}"
-    puts "@lis_outcome_service_url: #{@lis_outcome_service_url}"
+    @user = request.params["user"]
 
     consumer = OAuth::Consumer.new("1", secret)
-    puts "Consumer #{consumer}"
     token = OAuth::AccessToken.new(consumer)
-    puts "Token: #{token}"
     @response = token.post(@lis_outcome_service_url, @pox_message, 'Content-Type' => 'application/xml')
     @response_body = @response.body
+    Submission.create(user: @user)
 
+    render :submission_response
+  end
 
-    puts @response_body
-    render :submission
+  def create
+    @submission = Submission.new(user: @user)
+    if @submission.save
+      render :submission_response
+    else
+      render 'new'
+    end
+  end
+
+  def show
+    response.headers.delete "X-Frame-Options"
+    secret = '1'
+
+    signature = ::OAuth2::Signature.new(request,secret)
+    @submission_id = request.query_parameters["submission_id"]
+
+    if signature.signature_valid?
+        render :show
+    else
+      render :invalid_signature
+    end
+
   end
 end
