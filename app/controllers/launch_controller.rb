@@ -28,12 +28,17 @@ class LaunchController < ActionController::Base
         user.token_requested_from = @domain
       end
 
-      unless @user.has_api_token? && @user.token_valid?(@devkey.base_url)
-        puts "User needs token"
-        request_access
-      else
-        puts "User already has token"
+      if @user["canvas_api_refresh_token"] != nil && Time.now.to_i > @user["token_expires_at"]
+        @user.send_oauth2_request(@user.build_refresh_token_request)
         render :show
+      else
+        unless @user.has_api_token? && @user.token_valid?(@devkey.base_url)
+          puts "User needs token"
+          request_access
+        else
+          puts "User already has token"
+          render :show
+        end
       end
     elsif @devkey
       render :invalid_signature
@@ -54,43 +59,9 @@ class LaunchController < ActionController::Base
     state = request.params["state"]
     puts "state= #{state}"
     user = User.find_by(user_id: state)
-    puts user
-    domain = user["token_requested_from"]
-    @devkey = Devkey.find_by(domain: domain)
+    puts "user in oauth2response #{user}"
 
-    if user["canvas_api_refresh_token"] && Time.now.to_i > user["token_expires_at"]
-      puts "Token expired, refreshing"
-      request = Typhoeus::Request.new("#{@devkey.base_url}/login/oauth2/token",
-                                      method: :post,
-                                      params: {:grant_type=>"refresh_token",
-                                               :client_id=> @devkey.client_id,
-                                               :client_secret => @devkey.key,
-                                               :redirect_uri => @devkey.uri,
-                                               :refresh_token => user["canvas_api_refresh_token"]
-                                      })
-    else
-      puts "Obtaining new token"
-      request = Typhoeus::Request.new("#{@devkey.base_url}/login/oauth2/token",
-                                      method: :post,
-                                      params: {:grant_type=>"authorization_code",
-                                               :client_id=> @devkey.client_id,
-                                               :client_secret => @devkey.key,
-                                               :redirect_uri => @devkey.uri,
-                                               :code => code
-                                      })
-
-    end
-
-    response = request.run
-    response_body = JSON.load response.response_body
-    puts response_body
-
-    user.update(canvas_api_token: response_body["access_token"],
-                 canvas_api_refresh_token: response_body["refresh_token"],
-                 token_expires_at: Time.now.to_i + response_body["expires_in"])
-
-    puts "Token updated to: #{response_body["access_token"]}"
-    puts user.canvas_api_token
+    user.send_oauth2_request(user.build_new_token_request(code))
 
     render :show
   end
