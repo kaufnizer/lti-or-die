@@ -9,7 +9,7 @@ class SubmissionController < LaunchController
     if Submission.any? == false
       @submission_id = 1
     else
-      @submission_id Submission.last.id+1
+      @submission_id = Submission.last.id+1
     end
 
 
