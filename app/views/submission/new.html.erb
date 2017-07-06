@@ -29,7 +29,7 @@
                                             </resultTotalScore>
                                             <!-- Added element -->
                                             <resultData>
-                                              <ltiLaunchUrl>http://localhost:3000/submission/show?submission_id=#{Submission.last.id+1}</ltiLaunchUrl>
+                                              <ltiLaunchUrl>http://localhost:3000/submission/show?submission_id=#{Submission.last.id+1 || "1"}</ltiLaunchUrl>
                                             </resultData>
                                           </result>
                                         </resultRecord>
