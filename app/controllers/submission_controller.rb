@@ -6,6 +6,12 @@ class SubmissionController < LaunchController
     @lis_result_sourcedid = request.params["lis_result_sourcedid"]
     @lis_outcome_service_url = request.params["lis_outcome_service_url"]
     @user = request.params["user_id"]
+    if Submission.any? == false
+      @submission_id = 1
+    else
+      @submission_id Submission.last.id+1
+    end
+
 
     signature = ::OAuth2::Signature.new(request,secret)
 
