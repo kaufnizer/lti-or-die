@@ -29,7 +29,7 @@
                                             </resultTotalScore>
                                             <!-- Added element -->
                                             <resultData>
-                                              <ltiLaunchUrl>https://stark-hollows-72196.herokuapp.com/submission/show?submission_id=#{Submission.last.id+1 || "1"}</ltiLaunchUrl>
+                                              <ltiLaunchUrl>https://stark-hollows-72196.herokuapp.com/submission/show?submission_id=#{Submission.last.id+1 ||= "1"}</ltiLaunchUrl>
                                             </resultData>
                                           </result>
                                         </resultRecord>
